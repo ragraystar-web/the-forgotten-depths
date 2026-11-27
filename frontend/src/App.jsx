@@ -178,14 +178,17 @@ function App() {
         <p>₱{book.price.toLocaleString('en-PH')}</p>
 
         <button
-          type="button"
-          className="add-to-cart-button"
+          type="button" className="add-to-cart-button" disabled={book.stock === 0}
           onClick={() => addToCart(book)}
         >
-          Add to Cart
+        
+        {book.stock === 0 ? "Out of Stock" : "Add to Cart"}
         </button>
+
       </div>
+
     ))}
+
   </div>
 
   <h2 id="warhammer">Warhammer 40,000 Archive</h2>
@@ -210,14 +213,17 @@ function App() {
         <p>₱{book.price.toLocaleString('en-PH')}</p>
 
         <button
-          type="button"
-          className="add-to-cart-button"
+          type="button" className="add-to-cart-button" disabled={book.stock === 0}
           onClick={() => addToCart(book)}
         >
-          Add to Cart
+        
+        {book.stock === 0 ? "Out of Stock" : "Add to Cart"}
         </button>
+
       </div>
+
     ))}
+    
   </div>
 
 </section>
@@ -240,12 +246,32 @@ function App() {
             <div className="book-details-info">
               <h2>{selectedBook.title}</h2>
               <p>{selectedBook.author}</p>
+              <p>Category: {selectedBook.category}</p>
               <p>{selectedBook.description}</p>
               <p>₱{selectedBook.price.toLocaleString('en-PH')}</p>
+              <p>Stock Available: {selectedBook.stock}</p>
+              <p
+                className={`stock-status ${
+                  selectedBook.stock === 0
+                  ? "out-of-stock": selectedBook.stock <= 3
+                  ? "low-stock"
+                  : "in-stock"
+                  }`}
+              >
+
+  {selectedBook.stock === 0
+    ? "Out of Stock"
+    : selectedBook.stock <= 3
+      ? "Low Stock"
+      : "In Stock"}
+</p>
               
-              <button onClick={() => addToCart(selectedBook)}>
-              Add to Cart
+              <button disabled={selectedBook.stock === 0}
+                onClick={() => addToCart(selectedBook)}
+              >
+              {selectedBook.stock === 0 ? "Out of Stock" : "Add to Cart"}
               </button>
+
               </div>
             </div>
           </div>

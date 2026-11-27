@@ -684,3 +684,43 @@
     width: 100%;
   }
 }
+
+/* DISABLED ADD TO CART BUTTON */
+
+.book-details-panel button:disabled {
+  background: #454545 !important;
+  color: #999999 !important;
+  border: 1px solid #555555;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* STOCK STATUS INDICATORS */
+
+.stock-status {
+  font-weight: bold;
+  letter-spacing: 0.5px;
+}
+
+.in-stock {
+  color: #8fae82;
+}
+
+.low-stock {
+  color: #d6a64b;
+}
+
+.out-of-stock {
+  color: #c46b6b;
+}
+
+/* DISABLED CATALOG BUTTONS */
+
+.book-card .add-to-cart-button:disabled {
+  background: #454545;
+  color: #999999;
+  border: 1px solid #555555;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
