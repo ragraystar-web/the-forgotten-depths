@@ -1,5 +1,6 @@
 import logo from './assets/forgotten-depths-logo.webp'
 import cavernBg from './assets/forgotten-cavern.png'
+import books from './books';
 import './App.css'
 
 function App() {
@@ -74,6 +75,19 @@ function App() {
       </p>
       <span className="collection-link">ENTER ARCHIVE →</span>
     </a>
+  </div>
+  <div className="book-grid">
+  {books.map((book) => (
+    <div className="book-card" key={book.id}>
+      <div className="book-cover">
+        BOOK COVER
+      </div>
+
+      <h3>{book.title}</h3>
+      <p>{book.author}</p>
+      <p>₱{book.price.toLocaleString('en-PH')}</p>
+    </div>
+                        ))}
   </div>
 </section>
 
