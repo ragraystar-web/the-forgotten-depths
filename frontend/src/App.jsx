@@ -164,7 +164,11 @@ function App() {
     .map((book) => (
       <div className="book-card" key={book.id}>
         <div className="book-cover">
-          BOOK COVER
+          {book.cover ? (
+            <img src={book.cover} alt={book.title} />
+            ) : (
+            <span>BOOK COVER</span>
+          )}
         </div>
 
         <h3>{book.title}</h3>
@@ -192,7 +196,11 @@ function App() {
     .map((book) => (
       <div className="book-card" key={book.id}>
         <div className="book-cover">
-          BOOK COVER
+          {book.cover ? (
+            <img src={book.cover} alt={book.title} />
+            ) : (
+            <span>BOOK COVER</span>
+          )}
         </div>
 
         <h3>{book.title}</h3>

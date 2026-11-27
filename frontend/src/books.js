@@ -7,7 +7,7 @@ const books = [
     category: "Lore",
     price: 350,
     stock: 10,
-    cover: "",
+    cover: "/src/assets/book-covers/the-lost-ruins.png",
     description: "A forgotten volume recovered from the depths of an ancient archive."
   },
 
