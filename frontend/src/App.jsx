@@ -153,23 +153,62 @@ function App() {
       <span className="collection-link">ENTER ARCHIVE →</span>
     </a>
   </div>
+
+  <h2 id="elder-scrolls">The Elder Scrolls Archive</h2>
+  <p>Chronicles, histories, and forgotten knowledge of Tamriel.</p>
+
   <div className="book-grid">
-  {books.map((book) => (
-    <div className="book-card" key={book.id}>
-      <div className="book-cover">
-        BOOK COVER
+    
+  {books
+    .filter((book) => book.universe === "elder-scrolls")
+    .map((book) => (
+      <div className="book-card" key={book.id}>
+        <div className="book-cover">
+          BOOK COVER
+        </div>
+
+        <h3>{book.title}</h3>
+        <p>{book.author}</p>
+        <p>₱{book.price.toLocaleString('en-PH')}</p>
+
+        <button
+          type="button"
+          className="add-to-cart-button"
+          onClick={() => addToCart(book)}
+        >
+          Add to Cart
+        </button>
       </div>
-
-      <h3>{book.title}</h3>
-      <p>{book.author}</p>
-      <p>₱{book.price.toLocaleString('en-PH')}</p>
-
-      <button type="button" className="add-to-cart-button" onClick={() => addToCart(book)}>
-        Add to Cart
-      </button>
-    </div>
-                        ))}
+    ))}
   </div>
+
+  <h2 id="warhammer">Warhammer 40,000 Archive</h2>
+  <p>The grim darkness of the far future, chronicled across the Imperium and beyond.</p>
+
+  <div className="book-grid">
+  {books
+    .filter((book) => book.universe === "warhammer-40k")
+    .map((book) => (
+      <div className="book-card" key={book.id}>
+        <div className="book-cover">
+          BOOK COVER
+        </div>
+
+        <h3>{book.title}</h3>
+        <p>{book.author}</p>
+        <p>₱{book.price.toLocaleString('en-PH')}</p>
+
+        <button
+          type="button"
+          className="add-to-cart-button"
+          onClick={() => addToCart(book)}
+        >
+          Add to Cart
+        </button>
+      </div>
+    ))}
+  </div>
+
 </section>
 
       </main>

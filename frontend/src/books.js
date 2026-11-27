@@ -21,6 +21,18 @@ const books = [
     stock: 10,
     cover: "",
     description: "Fragments of history and forgotten stories from across Tamriel."
+  },
+
+    {
+    id: "WH-001",
+    title: "The Imperium: A Chronicle of Mankind",
+    author: "The Imperial Archivist",
+    universe: "warhammer-40k",
+    category: "Lore",
+    price: 550,
+    stock: 10,
+    cover: "",
+    description: "A chronicle of mankind, its empire, and its endless struggle for survival."
   }
 
 ];
