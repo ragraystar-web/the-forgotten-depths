@@ -162,6 +162,87 @@
 }
 
 /* =========================
+   ARCHIVE COLLECTION CARDS
+========================= */
+
+.collection-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  max-width: 1000px;
+  margin: 60px auto 0;
+  padding: 0 20px;
+}
+
+.collection-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  min-height: 280px;
+  padding: 40px;
+
+  background: linear-gradient(
+    145deg,
+    #111b1c,
+    #0b0d0e
+  );
+
+  border: 1px solid #494033;
+  text-decoration: none;
+  color: #e9dfce;
+
+  transition: border-color 0.3s ease,
+              transform 0.3s ease,
+              background 0.3s ease;
+}
+
+.collection-card:hover {
+  border-color: #c4a574;
+  transform: translateY(-5px);
+
+  background: linear-gradient(
+    145deg,
+    #172526,
+    #0b0d0e
+  );
+}
+
+.collection-number {
+  color: #c4a574;
+  font-size: 11px;
+  letter-spacing: 4px;
+  margin-bottom: 20px;
+}
+
+.collection-card h3 {
+  color: #e9dfce;
+  font-size: 28px;
+  font-weight: normal;
+  margin: 0 0 18px;
+}
+
+.collection-card p {
+  color: #a9a39a;
+  font-size: 15px;
+  line-height: 1.8;
+  max-width: 400px;
+  margin: 0 auto 30px;
+}
+
+.collection-link {
+  color: #c4a574;
+  font-size: 12px;
+  letter-spacing: 2px;
+  margin-top: auto;
+  transition: color 0.3s ease;
+}
+
+.collection-card:hover .collection-link {
+  color: #e9dfce;
+}
+
+/* =========================
    RESPONSIVE HEADER
 ========================= */
 
@@ -292,5 +373,26 @@
 
   .collection-card h3 {
     font-size: 25px;
+  }
+}
+
+/* =========================
+   RESPONSIVE COLLECTION
+========================= */
+
+@media (max-width: 700px) {
+  .collection-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    padding: 0 16px;
+  }
+
+  .collection-card {
+    min-height: 240px;
+    padding: 30px 20px;
+  }
+
+  .catalog-intro h2 {
+    font-size: 30px;
   }
 }

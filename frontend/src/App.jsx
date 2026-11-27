@@ -1,4 +1,5 @@
 import logo from './assets/forgotten-depths-logo.webp'
+import cavernBg from './assets/forgotten-cavern.png'
 import './App.css'
 
 function App() {
@@ -22,7 +23,16 @@ function App() {
       </header>
 
       <main>
-        <section className="hero">
+        <section 
+          className="hero"
+          style={{
+            backgroundImage: `
+              linear-gradient(
+                rgba(5, 8, 10, 0.35),
+                rgba(5, 8, 10, 0.55)
+                ),
+                url(${cavernBg})`
+          }}>
           <p className="hero-label">AN ARCHIVE BEYOND TIME</p>
 
           <h1>The Forgotten Depths</h1>
