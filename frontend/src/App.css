@@ -1,0 +1,296 @@
+
+/* =========================
+   WEBSITE HEADER
+========================= */
+
+.site-header {
+  width: 100%;
+  min-height: 100px;
+  padding: 10px 3%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+
+  background: #090a0b;
+  border-bottom: 1px solid rgba(196, 165, 116, 0.25);
+}
+
+.brand img {
+  display: block;
+  width: 170px;
+  max-height: 85px;
+  height: auto;
+  object-fit: contain;
+}
+
+.brand-icon {
+  color: #c4a574;
+  font-size: 28px;
+}
+
+.navigation {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.navigation a {
+  color: #b8b1a6;
+  font-size: 14px;
+  transition: color 0.3s ease;
+}
+
+.navigation a:hover {
+  color: #d4b477;
+}
+
+.cart-button {
+  padding: 10px 18px;
+
+  color: #d4b477;
+  background: transparent;
+  border: 1px solid rgba(196, 165, 116, 0.45);
+
+  transition: all 0.3s ease;
+}
+
+.cart-button:hover {
+  background: #c4a574;
+  color: #101010;
+}
+
+/* =========================
+   HERO SECTION
+========================= */
+
+.hero {
+  min-height: 520px;
+  width: 100%;
+  padding: 100px 20px 80px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+
+  background:
+    radial-gradient(
+      ellipse at center,
+      rgba(20, 75, 82, 0.35),
+      transparent 70%
+    ),
+    linear-gradient(
+      180deg,
+      #111719 0%,
+      #0b0d0e 100%
+    );
+
+  border-bottom: 1px solid rgba(196, 165, 116, 0.2);
+}
+
+.hero-label {
+  color: #c4a574;
+  font-size: 12px;
+  letter-spacing: 5px;
+  margin-bottom: 24px;
+}
+
+.hero h1 {
+  margin: 0 0 24px;
+
+  color: #e9dfce;
+  font-size: clamp(38px, 6vw, 76px);
+  font-weight: normal;
+  letter-spacing: 3px;
+}
+
+.hero-description {
+  color: #b9b3a9;
+  font-size: 17px;
+  line-height: 1.9;
+  margin-bottom: 36px;
+}
+
+.explore-button {
+  display: inline-block;
+  padding: 14px 30px;
+
+  color: #111;
+  background: #c4a574;
+
+  font-size: 13px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+
+  transition: all 0.3s ease;
+}
+
+.explore-button:hover {
+  background: #e0c18a;
+  transform: translateY(-2px);
+}
+
+/* =========================
+   CATALOG INTRO
+========================= */
+
+.catalog-intro {
+  width: 100%;
+  padding: 80px 20px;
+  text-align: center;
+}
+
+.section-label {
+  color: #c4a574;
+  font-size: 12px;
+  letter-spacing: 4px;
+  margin-bottom: 18px;
+}
+
+.catalog-intro h2 {
+  color: #e9dfce;
+  font-size: 36px;
+  font-weight: normal;
+  margin: 0 0 20px;
+}
+
+.catalog-intro > p:last-child {
+  color: #a9a39a;
+  font-size: 16px;
+}
+
+/* =========================
+   RESPONSIVE HEADER
+========================= */
+
+@media (max-width: 900px) {
+  .site-header {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .navigation {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 18px;
+  }
+}
+
+@media (max-width: 600px) {
+  .site-header {
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .brand {
+    font-size: 15px;
+  }
+
+  .navigation {
+    gap: 14px;
+  }
+
+  .navigation a {
+    font-size: 12px;
+  }
+
+  .hero {
+    min-height: 430px;
+    padding: 70px 20px;
+  }
+
+  .hero-description {
+    font-size: 14px;
+  }
+
+  .catalog-intro h2 {
+    font-size: 28px;
+  }
+}
+
+/* =========================
+   COLLECTION CARDS
+========================= */
+
+.collection-grid {
+  width: min(100%, 1050px);
+  margin: 60px auto 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 28px;
+}
+
+.collection-card {
+  min-height: 280px;
+  padding: 38px 30px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(25, 37, 36, 0.95),
+      rgba(12, 15, 15, 0.98)
+    );
+
+  border: 1px solid rgba(196, 165, 116, 0.3);
+  transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.collection-card:hover {
+  transform: translateY(-6px);
+  border-color: #c4a574;
+}
+
+.collection-number {
+  color: #c4a574;
+  font-size: 11px;
+  letter-spacing: 4px;
+  margin-bottom: 18px;
+}
+
+.collection-card h3 {
+  color: #e9dfce;
+  font-size: 30px;
+  font-weight: normal;
+  margin: 0 0 18px;
+}
+
+.collection-card p {
+  max-width: 400px;
+  color: #a9a39a;
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+.collection-link {
+  color: #c4a574;
+  font-size: 12px;
+  letter-spacing: 2px;
+  margin-top: 28px;
+}
+
+/* COLLECTION RESPONSIVENESS */
+
+@media (max-width: 600px) {
+  .collection-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    margin-top: 35px;
+  }
+
+  .collection-card {
+    min-height: 240px;
+    padding: 28px 20px;
+  }
+
+  .collection-card h3 {
+    font-size: 25px;
+  }
+}
