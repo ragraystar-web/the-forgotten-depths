@@ -5,8 +5,44 @@ import books from './books';
 import './App.css'
 
 function App() {
-  const [cartCount, setCartCount] = useState(0);
-  return (
+  const [cartItems, setCartItems] = useState([]);
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  
+  const addToCart = (bookToAdd) => {
+  setCartItems((currentItems) => {
+    const existingItem = currentItems.find(
+      (item) => item.id === bookToAdd.id
+    );
+
+    if (existingItem) {
+      return currentItems.map((item) =>
+        item.id === bookToAdd.id
+          ? { ...item, quantity: item.quantity + 1 }
+          : item
+      );
+    }
+
+    return [...currentItems, { ...bookToAdd, quantity: 1 }];
+  });
+};
+
+  const updateQuantity = (bookId, change) => {
+  setCartItems((currentItems) =>
+    currentItems
+      .map((item) =>
+        item.id === bookId
+          ? { ...item, quantity: item.quantity + change }
+          : item
+      )
+      .filter((item) => item.quantity > 0)
+    );
+  };
+
+  const cartTotal = cartItems.reduce(
+    (total, item) => total + item.price * item.quantity, 0
+  );
+
+  return (  
     <>
       <header className="site-header">
         <div className="brand">
@@ -21,9 +57,48 @@ function App() {
         </nav>
 
         <div className="header-actions">
-          <button className="cart-button"> Cart ({cartCount}) </button>
+          <button
+            className="cart-button"
+            onClick={() => setIsCartOpen(!isCartOpen)}
+          >
+            Cart ({cartItems.reduce((total, item) => total + item.quantity, 0)})
+          </button>
         </div>
       </header>
+
+      {isCartOpen && (
+        <div className="cart-panel">
+        <h2>Your Cart</h2>
+
+        {cartItems.length === 0 ? (
+          <p>Your cart is empty.</p>
+        ) : (
+        cartItems.map((item) => (
+        <div className="cart-item" key={item.id}>
+          <h3>{item.title}</h3>
+          <div className="quantity-controls">
+              <button onClick={() => updateQuantity(item.id, -1)}>
+              −
+              </button>
+
+              <span>{item.quantity}</span>
+
+              <button onClick={() => updateQuantity(item.id, 1)}>
+              +
+              </button>
+          </div>
+          <p>Price: ₱{item.price.toLocaleString('en-PH')}</p>
+          <p>
+            Subtotal: ₱{(item.price * item.quantity).toLocaleString('en-PH')}
+          </p>
+          </div>
+              ))
+            )}
+            <p className="cart-total">
+            Total: ₱{cartTotal.toLocaleString('en-PH')}
+            </p>
+          </div>
+      )}
 
       <main>
         <section 
@@ -89,7 +164,7 @@ function App() {
       <p>{book.author}</p>
       <p>₱{book.price.toLocaleString('en-PH')}</p>
 
-      <button type="button" className="add-to-cart-button" onClick={() => setCartCount(cartCount + 1)}>
+      <button type="button" className="add-to-cart-button" onClick={() => addToCart(book)}>
         Add to Cart
       </button>
     </div>
