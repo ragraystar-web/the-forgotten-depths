@@ -7,6 +7,7 @@ import './App.css'
 function App() {
   const [cartItems, setCartItems] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [selectedBook, setSelectedBook] = useState(null);
   
   const addToCart = (bookToAdd) => {
   setCartItems((currentItems) => {
@@ -162,7 +163,7 @@ function App() {
   {books
     .filter((book) => book.universe === "elder-scrolls")
     .map((book) => (
-      <div className="book-card" key={book.id}>
+      <div className="book-card" key={book.id} onClick={() => setSelectedBook(book)}>
         <div className="book-cover">
           {book.cover ? (
             <img src={book.cover} alt={book.title} />
@@ -194,7 +195,7 @@ function App() {
   {books
     .filter((book) => book.universe === "warhammer-40k")
     .map((book) => (
-      <div className="book-card" key={book.id}>
+      <div className="book-card" key={book.id} onClick={() => setSelectedBook(book)}>
         <div className="book-cover">
           {book.cover ? (
             <img src={book.cover} alt={book.title} />
@@ -222,6 +223,35 @@ function App() {
 </section>
 
       </main>
+
+      {selectedBook && (
+        <div className="book-details-overlay" onClick={() => setSelectedBook(null)}>
+          <div className="book-details-panel" onClick={(e) => e.stopPropagation()}>
+            <button
+              className="close-details-button"
+              onClick={() => setSelectedBook(null)}
+            >
+              ✕
+            </button>
+
+            <div className="book-details-content">
+              {selectedBook.cover && ( <img className="book-details-cover" src={selectedBook.cover} alt={selectedBook.title} />
+              )}
+            <div className="book-details-info">
+              <h2>{selectedBook.title}</h2>
+              <p>{selectedBook.author}</p>
+              <p>{selectedBook.description}</p>
+              <p>₱{selectedBook.price.toLocaleString('en-PH')}</p>
+              
+              <button onClick={() => addToCart(selectedBook)}>
+              Add to Cart
+              </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
     </>
   )
 }
