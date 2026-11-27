@@ -8,7 +8,7 @@ function App() {
   const [cartItems, setCartItems] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [selectedBook, setSelectedBook] = useState(null);
-  
+    
   const addToCart = (bookToAdd) => {
   setCartItems((currentItems) => {
     const existingItem = currentItems.find(
@@ -16,6 +16,10 @@ function App() {
     );
 
     if (existingItem) {
+      if (existingItem.quantity >= bookToAdd.stock) {
+        return currentItems;
+      }
+      
       return currentItems.map((item) =>
         item.id === bookToAdd.id
           ? { ...item, quantity: item.quantity + 1 }
@@ -23,8 +27,14 @@ function App() {
       );
     }
 
+    if (bookToAdd.stock <= 0) {
+      return currentItems;
+    }
+    
     return [...currentItems, { ...bookToAdd, quantity: 1 }];
+
   });
+
 };
 
   const updateQuantity = (bookId, change) => {
@@ -32,8 +42,14 @@ function App() {
     currentItems
       .map((item) =>
         item.id === bookId
-          ? { ...item, quantity: item.quantity + change }
-          : item
+          ? {
+            ...item,
+              quantity:
+                change > 0 && item.quantity >= item.stock
+                  ? item.quantity
+                  : item.quantity + change,
+            }
+        : item
       )
       .filter((item) => item.quantity > 0)
     );
@@ -223,7 +239,7 @@ function App() {
       </div>
 
     ))}
-    
+
   </div>
 
 </section>
