@@ -7,9 +7,11 @@ import './App.css'
 function App() {
   const [cartItems, setCartItems] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [selectedBook, setSelectedBook] = useState(null);
   const [cartMessage, setCartMessage] = useState("");
-    
+  const [checkoutMessage, setCheckoutMessage] = useState("");
+  
   const addToCart = (bookToAdd) => {
   setCartItems((currentItems) => {
     const existingItem = currentItems.find(
@@ -66,6 +68,75 @@ function App() {
       .filter((item) => item.quantity > 0)
   );
 };
+
+
+
+const validateCheckout = () => {
+  if (cartItems.length === 0) {
+    setCheckoutMessage("Your cart is empty. Add books before proceeding.");
+    return false;
+  }
+
+const invalidItem = cartItems.find(
+  (item) => !books.some((book) => book.id === item.id)
+);
+
+if (invalidItem) {
+  setCheckoutMessage(`Invalid book ID: ${invalidItem.id}`);
+  return false;
+}
+
+const invalidQuantity = cartItems.find(
+  (item) => !Number.isInteger(item.quantity) || item.quantity <= 0
+);
+
+if (invalidQuantity) {
+  setCheckoutMessage(
+    `Invalid quantity for "${invalidQuantity.title}".`
+  );
+  return false;
+}
+
+const insufficientStock = cartItems.find(
+  (item) => item.quantity > item.stock
+);
+
+if (insufficientStock) {
+  setCheckoutMessage(
+    `Insufficient stock for "${insufficientStock.title}". Available: ${insufficientStock.stock}.`
+  );
+  return false;
+}
+
+const invalidPrice = cartItems.find((item) => {
+  const catalogBook = books.find((book) => book.id === item.id);
+
+  return item.price !== catalogBook.price;
+});
+
+if (invalidPrice) {
+  setCheckoutMessage(
+    `Invalid price for "${invalidPrice.title}".`
+  );
+  return false;
+}
+
+const expectedTotal = cartItems.reduce((total, item) => {
+  const catalogBook = books.find((book) => book.id === item.id);
+
+  return total + catalogBook.price * item.quantity;
+}, 0);
+
+if (cartTotal !== expectedTotal) {
+  setCheckoutMessage("Order total does not match the expected total.");
+  return false;
+}
+
+  setCheckoutMessage("Cart passed empty-cart validation.");
+  return true;
+};           
+
+
 
   const cartTotal = cartItems.reduce(
     (total, item) => total + item.price * item.quantity, 0
@@ -127,8 +198,54 @@ function App() {
             <p className="cart-total">
             Total: ₱{cartTotal.toLocaleString('en-PH')}
             </p>
+            <button className="checkout-button" disabled={cartItems.length === 0} onClick={() => 
+              {setIsCheckoutOpen(true);
+              setIsCartOpen(false);
+              }}>
+              Proceed to Checkout
+            </button>
           </div>
       )}
+
+      {isCheckoutOpen && (
+        <div className="checkout-panel">
+          <h2>Checkout</h2>
+          <p>Review your order before proceeding.</p>
+            <div className="checkout-items">
+              {cartItems.map((item) => (
+                <div className="checkout-item" key={item.id}>
+                  <h3>{item.title}</h3>
+                  <p>Quantity: {item.quantity}</p>
+                  <p>
+                  Unit Price: ₱{item.price.toLocaleString('en-PH')}</p>
+                  <p>
+                  Subtotal: ₱{(item.price * item.quantity).toLocaleString('en-PH')}</p>
+        </div>
+      ))}
+
+    </div>
+
+    <p>
+    Order Total: ₱{cartTotal.toLocaleString('en-PH')}
+    </p>
+    
+   
+
+    <button onClick={validateCheckout}>
+      Validate Order
+    </button>
+    
+    {checkoutMessage && (
+      <p className="checkout-message">{checkoutMessage}</p>
+      )}
+      
+      <button onClick={() => setIsCheckoutOpen(false)}>
+        Back to Store
+      </button>
+
+  </div>
+
+)}
 
       <main>
         <section 
