@@ -8,6 +8,7 @@ function App() {
   const [cartItems, setCartItems] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [selectedBook, setSelectedBook] = useState(null);
+  const [cartMessage, setCartMessage] = useState("");
     
   const addToCart = (bookToAdd) => {
   setCartItems((currentItems) => {
@@ -17,9 +18,13 @@ function App() {
 
     if (existingItem) {
       if (existingItem.quantity >= bookToAdd.stock) {
+        setCartMessage(`Maximum stock reached for "${bookToAdd.title}".`);
+
         return currentItems;
       }
       
+      setCartMessage("");
+
       return currentItems.map((item) =>
         item.id === bookToAdd.id
           ? { ...item, quantity: item.quantity + 1 }
@@ -38,22 +43,29 @@ function App() {
 };
 
   const updateQuantity = (bookId, change) => {
+  const existingItem = cartItems.find(
+    (item) => item.id === bookId
+  );
+
+  if (change > 0 && existingItem && existingItem.quantity >= existingItem.stock) {
+    setCartMessage(
+      `Maximum stock reached for "${existingItem.title}".`
+    );
+    return;
+  }
+
+  setCartMessage("");
+
   setCartItems((currentItems) =>
     currentItems
       .map((item) =>
         item.id === bookId
-          ? {
-            ...item,
-              quantity:
-                change > 0 && item.quantity >= item.stock
-                  ? item.quantity
-                  : item.quantity + change,
-            }
-        : item
+          ? { ...item, quantity: item.quantity + change }
+          : item
       )
       .filter((item) => item.quantity > 0)
-    );
-  };
+  );
+};
 
   const cartTotal = cartItems.reduce(
     (total, item) => total + item.price * item.quantity, 0
@@ -86,6 +98,7 @@ function App() {
       {isCartOpen && (
         <div className="cart-panel">
         <h2>Your Cart</h2>
+        {cartMessage && <p className="cart-message">{cartMessage}</p>}
 
         {cartItems.length === 0 ? (
           <p>Your cart is empty.</p>
