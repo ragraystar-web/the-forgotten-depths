@@ -1,9 +1,11 @@
 import logo from './assets/forgotten-depths-logo.webp'
 import cavernBg from './assets/forgotten-cavern.png'
+import { useState } from 'react';
 import books from './books';
 import './App.css'
 
 function App() {
+  const [cartCount, setCartCount] = useState(0);
   return (
     <>
       <header className="site-header">
@@ -19,7 +21,7 @@ function App() {
         </nav>
 
         <div className="header-actions">
-          <button className="cart-button">Cart (0)</button>
+          <button className="cart-button"> Cart ({cartCount}) </button>
         </div>
       </header>
 
@@ -86,6 +88,10 @@ function App() {
       <h3>{book.title}</h3>
       <p>{book.author}</p>
       <p>₱{book.price.toLocaleString('en-PH')}</p>
+
+      <button type="button" className="add-to-cart-button" onClick={() => setCartCount(cartCount + 1)}>
+        Add to Cart
+      </button>
     </div>
                         ))}
   </div>
