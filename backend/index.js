@@ -23,6 +23,15 @@ app.get("/api/books", (req, res) => {
     res.json(books);
 });
 
+app.post("/api/checkout", (req, res) => {
+    console.log("Checkout request received:", req.body);
+
+    res.json({
+        message: "Checkout endpoint received the request!",
+        order: req.body
+    });
+});
+
 app.listen(PORT, () => {
     console.log(`Server running at http://localhost:${PORT}`);
 });
