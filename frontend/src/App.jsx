@@ -12,6 +12,7 @@ function App() {
   const [cartMessage, setCartMessage] = useState("");
   const [checkoutMessage, setCheckoutMessage] = useState("");
   const [checkoutLoading, setCheckoutLoading] = useState(false);
+  const [checkoutCompleted, setCheckoutCompleted] = useState(false);
   const checkoutLock = useRef(false);
   
   useEffect(() => {
@@ -22,7 +23,10 @@ function App() {
   }, []);
 
   const addToCart = (bookToAdd) => {
-  setCartItems((currentItems) => {
+    setCheckoutCompleted(false);
+    setCheckoutMessage("");
+
+   setCartItems((currentItems) => {
     const existingItem = currentItems.find(
       (item) => item.id === bookToAdd.id
     );
@@ -83,6 +87,11 @@ function App() {
 const validateCheckout = async () => {
 
   if (checkoutLock.current) {
+    return false;
+  }
+
+  if (checkoutCompleted) {
+    setCheckoutMessage("This order has already been completed.");
     return false;
   }
 
@@ -171,11 +180,20 @@ if (cartTotal !== expectedTotal) {
       return false;
     }
 
+    setCheckoutCompleted(true);
+
+    setCartItems([]);
+
+    fetch("/api/books")
+      .then((response) => response.json())
+      .then((data) => setBooks(data))
+      .catch((error) => console.error("Error refreshing books:", error));
+
     setCheckoutMessage(
       `Order validated successfully! Total: ₱${data.order.total.toLocaleString("en-PH")}`
     );
 
-    return true;
+return true;
 
   } catch (error) {
       setCheckoutMessage("Unable to connect to the server. Please try again.");
@@ -283,9 +301,13 @@ if (cartTotal !== expectedTotal) {
 
     <button
       onClick={validateCheckout}
-      disabled={checkoutLoading}
+      disabled={checkoutLoading || checkoutCompleted}
     >
-      {checkoutLoading ? "Processing Order..." : "Validate Order"}
+      {checkoutLoading
+        ? "Processing Order..."
+        : checkoutCompleted
+        ? "Order Completed"
+        : "Validate Order"}
     </button>
     
     {checkoutMessage && (
