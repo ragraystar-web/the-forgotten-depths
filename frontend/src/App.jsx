@@ -1,6 +1,6 @@
 import logo from './assets/forgotten-depths-logo.webp'
 import cavernBg from './assets/forgotten-cavern.png'
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import './App.css'
 
 function App() {
@@ -11,6 +11,8 @@ function App() {
   const [selectedBook, setSelectedBook] = useState(null);
   const [cartMessage, setCartMessage] = useState("");
   const [checkoutMessage, setCheckoutMessage] = useState("");
+  const [checkoutLoading, setCheckoutLoading] = useState(false);
+  const checkoutLock = useRef(false);
   
   useEffect(() => {
     fetch("/api/books")
@@ -78,7 +80,12 @@ function App() {
 
 
 
-const validateCheckout = () => {
+const validateCheckout = async () => {
+
+  if (checkoutLock.current) {
+    return false;
+  }
+
   if (cartItems.length === 0) {
     setCheckoutMessage("Your cart is empty. Add books before proceeding.");
     return false;
@@ -139,8 +146,44 @@ if (cartTotal !== expectedTotal) {
   return false;
 }
 
-  setCheckoutMessage("Cart passed empty-cart validation.");
-  return true;
+    try {
+
+    checkoutLock.current = true;
+    setCheckoutLoading(true);  
+
+    const response = await fetch("/api/checkout", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        items: cartItems.map((item) => ({
+          id: item.id,
+          quantity: item.quantity
+        }))
+      })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      setCheckoutMessage(data.error || "Checkout failed.");
+      return false;
+    }
+
+    setCheckoutMessage(
+      `Order validated successfully! Total: ₱${data.order.total.toLocaleString("en-PH")}`
+    );
+
+    return true;
+
+  } catch (error) {
+      setCheckoutMessage("Unable to connect to the server. Please try again.");
+      return false;
+    } finally {
+      checkoutLock.current = false;
+      setCheckoutLoading(false);
+      }
 };           
 
 
@@ -238,8 +281,11 @@ if (cartTotal !== expectedTotal) {
     
    
 
-    <button onClick={validateCheckout}>
-      Validate Order
+    <button
+      onClick={validateCheckout}
+      disabled={checkoutLoading}
+    >
+      {checkoutLoading ? "Processing Order..." : "Validate Order"}
     </button>
     
     {checkoutMessage && (
