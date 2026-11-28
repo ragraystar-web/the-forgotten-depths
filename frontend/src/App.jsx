@@ -1,10 +1,10 @@
 import logo from './assets/forgotten-depths-logo.webp'
 import cavernBg from './assets/forgotten-cavern.png'
-import { useState } from 'react';
-import books from './books';
+import { useState, useEffect } from 'react';
 import './App.css'
 
 function App() {
+  const [books, setBooks] = useState([]);
   const [cartItems, setCartItems] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
@@ -12,6 +12,13 @@ function App() {
   const [cartMessage, setCartMessage] = useState("");
   const [checkoutMessage, setCheckoutMessage] = useState("");
   
+  useEffect(() => {
+    fetch("/api/books")
+    .then((response) => response.json())
+    .then((data) => setBooks(data))
+    .catch((error) => console.error("Error fetching books:", error));
+  }, []);
+
   const addToCart = (bookToAdd) => {
   setCartItems((currentItems) => {
     const existingItem = currentItems.find(
@@ -42,7 +49,7 @@ function App() {
 
   });
 
-};
+  };
 
   const updateQuantity = (bookId, change) => {
   const existingItem = cartItems.find(
@@ -67,7 +74,7 @@ function App() {
       )
       .filter((item) => item.quantity > 0)
   );
-};
+  };
 
 
 
